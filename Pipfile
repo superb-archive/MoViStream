@@ -15,6 +15,7 @@ pydantic = "*"
 confluent-kafka = "*"
 requests = "*"
 certifi = "*"
+ksql = "*"
 
 [requires]
 python_version = "3.8.12"
