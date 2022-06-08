@@ -5,3 +5,6 @@ client = KSQLAPI(
     api_key="GNDPZPGQ263RLDUW",
     secret="I3lV2PFVd8V/v7GKk1Yi8tfY/Aey/0YFmTDZ3hHgN/gpiAjaXbVtr/tHd1vSghbY",
 )
+
+# query
+q = "select * from ksql.streams.ksql_stream_test"
