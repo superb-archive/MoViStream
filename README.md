@@ -49,6 +49,13 @@ $ ./src/producer.py -f ./confluent/python.config -t test1
 ```
 
 ### run kafka consumer
+
 ```bash
 $ ./src/consumer.py -f ./confluent/python.config -t test1
+```
+
+### run streamlit
+
+```bash
+$ streamlit run src/streamlit/visualizer.py
 ```

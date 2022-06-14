@@ -16,6 +16,9 @@ confluent-kafka = "*"
 requests = "*"
 certifi = "*"
 ksql = "*"
+streamlit = "*"
+bokeh = "*"
 
 [requires]
 python_version = "3.8.12"
+plotly = "*"
