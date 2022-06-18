@@ -7,13 +7,13 @@ from confluent_kafka import Producer
 
 from model import Image, Info, LabelFlattened
 
-conf = {"bootstrap.servers": "localhost:29092"}
-producer = Producer(conf)
 
+class Node:
+    def __init__(self, conf) -> None:
+        self.producer = Producer(conf)
 
-def produce_labels():
+    def produce_label(self):
 
-    while True:
         with open("labels/bdd100k_labels_images_val.json") as rf:
             data = ijson.items(rf, "item")
             for image_dict in data:
@@ -27,18 +27,15 @@ def produce_labels():
                         weather=image.attributes.weather,
                     )
 
-                    producer.produce(
+                    self.producer.produce(
                         topic="labels",
                         value=json.dumps(label_flattened.dict()),
                         key=label_flattened.id,
                     )
+                    self.producer.flush()
 
-                time.sleep(1)
+    def produce_info(self):
 
-
-def produce_info():
-
-    while True:
         directory = "info"
         for filename in os.listdir(directory):
             f = os.path.join(directory, filename)
@@ -49,10 +46,9 @@ def produce_info():
                 info_dict = json.loads(rf.read())
                 info = Info(**info_dict)
 
-                producer.produce(
+                self.producer.produce(
                     topic="info",
                     value=json.dumps(info.dict()),
                     key=info.id,
                 )
-
-        time.sleep(5)
+                self.producer.flush()
