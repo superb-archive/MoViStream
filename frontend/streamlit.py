@@ -40,7 +40,7 @@ st.button("Real Time / Stop", on_click=switch_realtime)
 placeholder = st.empty()
 
 
-while st.session_state["real_time"] == True:
+while "real_time" in st.session_state and st.session_state["real_time"]:
     with placeholder.container():
         category_df = pd.DataFrame()
         for data in get_category_index():
