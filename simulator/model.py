@@ -1,6 +1,6 @@
 from typing import List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class ImageAttribute(BaseModel):
@@ -52,3 +52,42 @@ class Image(BaseModel):
     labels: List[Label]
     name: str
     timestamp: int
+
+
+class XYZT(BaseModel):
+    x: float
+    y: float
+    z: float
+    timestamp: int
+
+
+class Location(BaseModel):
+    timestamp: int
+    longitude: float
+    latitude: float
+    course: float
+    speed: float
+    accuracy: float
+
+
+class GPS(BaseModel):
+    timestamp: int
+    altitude: float
+    longitude: float
+    vertical_accuracy: float = Field(alias="vertical accuracy")
+    horizontal_accuracy: float = Field(alias="horizontal accuracy")
+    latitude: float
+    speed: float
+
+
+class Info(BaseModel):
+    rideID: str
+    accelerometer: List[XYZT]
+    gyro: List[XYZT]
+    timelapse: int
+    locations: List[Location]
+    filename: str
+    startTime: int
+    endTime: int
+    id: str
+    gps: List[GPS]
