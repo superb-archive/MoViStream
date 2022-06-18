@@ -1,25 +1,51 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
+import plotly.express as px
 
-
-dataframe = pd.DataFrame(
-    np.random.randn(10, 5), columns=("col %d" % i for i in range(5))
+# set page layout
+st.set_page_config(
+    page_title="Streamlit Map",
+    page_icon="🚘",
+    # layout="wide",
+    initial_sidebar_state="expanded",
 )
-dataframe
-st.write("This is a line_chart.")
-st.line_chart(dataframe)
 
-st.write("This is a area_chart.")
-st.area_chart(dataframe)
+st.title("Streamlit Map")
 
-st.write("This is a bar_chart.")
-st.bar_chart(dataframe)
+st.sidebar.subheader("weather")
+weather_sunny = st.sidebar.checkbox("sunny")
+weather_rainiy = st.sidebar.checkbox("rainy")
+weather_foggy = st.sidebar.checkbox("foggy")
 
-
-st.write("Map data")
-data_of_map = pd.DataFrame(
-    np.random.randn(1000, 2) / [60, 60] + [36.66, -121.6],
-    columns=["latitude", "longitude"],
+# data
+df = pd.DataFrame(
+    {
+        "latitude": [37.77, 37.77, 37.77, 37.77],
+        "longitude": [
+            -122.42,
+            -122.42,
+            -122.42,
+            -122.42,
+        ],
+        "weather": ["sunny", "rainy", "foggy", "sunny"],
+        "cateogry": ["car", "car", "turck", "human"],
+        "count": [1, 2, 3, 4],
+    }
 )
-st.map(data_of_map)
+
+# Plot the GPS coordinates on the map
+st.map(df)
+
+st.subheader("label info")
+if weather_sunny:
+    condition = df["weather"] == "sunny"
+    df = df[condition]
+if weather_foggy:
+    condition = df["weather"] == "foggy"
+    df = df[condition]
+if weather_rainiy:
+    condition = df["weather"] == "rainy"
+    df = df[condition]
+
+fig = px.pie(df, values="count", names="cateogry")
+st.write(fig)
