@@ -4,16 +4,16 @@ import warnings
 from labels import (
     get_category_index,
     get_scene_index,
-    get_weather_index,
     get_timeofday_index,
+    get_weather_index,
 )
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
-import streamlit as st
 import pandas as pd
 import plotly.express as px
 
+import streamlit as st
 
 # set page layout
 st.set_page_config(
@@ -25,7 +25,6 @@ st.set_page_config(
 
 
 st.title("Streamlit App")
-
 
 if "real_time" not in st.session_state:
     st.session_state["real_time"] = True
@@ -62,7 +61,7 @@ while st.session_state["real_time"] == True:
                     ignore_index=True,
                 )
         weather_fig = px.pie(weather_df, values="total", names="weather")
-        
+
         scene_df = pd.DataFrame()
         for data in get_scene_index():
             if data.get("row"):
@@ -72,7 +71,7 @@ while st.session_state["real_time"] == True:
                     ignore_index=True,
                 )
         scene_fig = px.pie(scene_df, values="total", names="scene")
-        
+
         timeofday_df = pd.DataFrame()
         for data in get_timeofday_index():
             if data.get("row"):
@@ -82,7 +81,7 @@ while st.session_state["real_time"] == True:
                     ignore_index=True,
                 )
         timeofday_fig = px.pie(timeofday_df, values="total", names="timeofday")
-        
+
         fig_col1, fig_col2 = st.columns(2)
 
         with fig_col1:

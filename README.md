@@ -5,7 +5,9 @@
 1. docker setup
 
     ```sh
-    $ docker-compose up -d -f docker/docker-compose.yml
+    $ docker-compose -f docker/docker-compose.yml up -d
+    $ docker exec -it ksqldb-server bash
+    ksql> [COPY tables.sql here]
     ```
 
 2. install dependencies
@@ -21,9 +23,15 @@
     $ python main.py
     ```
 
-4. run dashboard
+4. check messages
+   ```sh
+   $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic labels --from-beginning"
+   $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic info --from-beginning"
+   ```
+
+5. run dashboard
 
     ```sh
     $ cd frontend
-    $ python streamlit.py
+    $ streamlit run streamlit.py
     ```
