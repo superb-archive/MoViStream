@@ -13,10 +13,9 @@ producer = Producer(conf)
 
 def produce_labels():
 
-    with open("labels/bdd100k_labels_images_val.json") as rf:
-        data = ijson.items(rf, "item")
-
-        while True:
+    while True:
+        with open("labels/bdd100k_labels_images_val.json") as rf:
+            data = ijson.items(rf, "item")
             for image_dict in data:
                 image = Image(**image_dict)
                 for label in image.labels:
@@ -34,8 +33,7 @@ def produce_labels():
                         key=label_flattened.id,
                     )
 
-                time.sleep(5)
-            break
+                time.sleep(1)
 
 
 def produce_info():
@@ -60,5 +58,5 @@ def produce_info():
         time.sleep(5)
 
 
-# produce_labels()
+produce_labels()
 # produce_info()
