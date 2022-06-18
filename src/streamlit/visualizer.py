@@ -48,23 +48,5 @@ st.set_page_config(
 
 st.title("Streamlit Map")
 
-# st.sidebar.subheader("weather")
-# weather_sunny = st.sidebar.checkbox("sunny", value=True)
-# weather_rainiy = st.sidebar.checkbox("rainy", value=True)
-# weather_foggy = st.sidebar.checkbox("foggy", value=True)
-
-# # Plot the GPS coordinates on the map
-# # st.map(df)
-
-# st.subheader("label info")
-# if weather_sunny:
-#     condition = df["weather"] == "partly cloudy"
-# if weather_foggy:
-#     condition = df["weather"] == "foggy"
-# if weather_rainiy:
-#     condition = df["weather"] == "rainy"
-# df = df[condition]
-
-
 fig = px.pie(df, values="total", names="category")
 st.write(fig)
