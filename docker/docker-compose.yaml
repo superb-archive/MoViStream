@@ -29,6 +29,19 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+    # entrypoint: [ '/bin/sh', '-c' ]
+    # command: |
+    #   "
+    #   # blocks until kafka is reachable
+    #   kafka-topics --bootstrap-server broker:9092 --list
+
+    #   echo -e 'Creating kafka topics'
+    #   kafka-topics --bootstrap-server broker:9092 --create --if-not-exists --topic labels --replication-factor 1 --partitions 1
+    #   kafka-topics --bootstrap-server broker:9092 --create --if-not-exists --topic info --replication-factor 1 --partitions 1
+
+    #   echo -e 'Successfully created the following topics:'
+    #   kafka-topics --bootstrap-server broker:9092 --list
+    #   "
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:7.1.1
