@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+confluent-kafka = "*"
+pydantic = "*"
+streamlit = "*"
+plotly = "*"
+ksql = "*"
+ijson = "*"
+
+[dev-packages]
+mypy = "*"
+flake8 = "*"
+black = "*"
+
+[requires]
+python_version = "3.9"
+
+[pipenv]
+allow_prereleases = true
