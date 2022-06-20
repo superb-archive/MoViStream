@@ -16,10 +16,8 @@
     # down
     docker-compose down
 
-    # all container delete
-    docker rm -f $(docker ps -aq)
     ```
-  
+
 2. container status
     ```bash
     $ docker ps
@@ -30,6 +28,7 @@
     5edb22b5b87e   confluentinc/cp-kafka:7.1.1                       "/etc/confluent/dock…"   2 hours ago   Up 2 hours   9092/tcp, 0.0.0.0:29092->29092/tcp           broker
     08521ea01733   confluentinc/cp-zookeeper:7.1.1                   "/etc/confluent/dock…"   2 hours ago   Up 2 hours   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   zookeeper
     ```
+
 3. Topics 
     ```bash
     ❯ docker exec -it broker bash
@@ -37,6 +36,7 @@
     __consumer_offsets
     __transaction_state
     ```
+
 4. Connect ksql cli
     ```bash
     ❯ docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
@@ -60,6 +60,7 @@
 
     Having trouble? Type 'help' (case-insensitive) for a rundown of how things work!
     ```
+
 5. Create table
     ```sql
     ksql> CREATE TABLE labels (id VARCHAR PRIMARY KEY, category VARCHAR, scene VARCHAR, timeofday VARCHAR, weather VARCHAR) WITH (KAFKA_TOPIC = 'labels', VALUE_FORMAT = 'JSON');
@@ -75,6 +76,13 @@
     LABELS     | labels      | KAFKA      | JSON         | false
     -----------------------------------------------------------------
     ```
+
 6. Control Center
 - open http://localhost:9092 in a browser.
 - monitoring Bokers, Topics, ksqlDB, Consumers etc..
+
+7. delete all
+    ```bash
+    # all container delete
+    docker rm -f $(docker ps -aq)
+    ```
