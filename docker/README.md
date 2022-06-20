@@ -4,13 +4,22 @@
 ## Getting Started
 
 1. container start
+
     ```bash
     cd docker
 
+    # start
     docker-compose up 
     or
     docker-compose up -d
+
+    # down
+    docker-compose down
+
+    # all container delete
+    docker rm -f $(docker ps -aq)
     ```
+  
 2. container status
     ```bash
     $ docker ps
