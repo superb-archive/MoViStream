@@ -64,7 +64,7 @@ services:
       - broker
       - ksqldb-server
     volumes:
-      - ../test.sql:/data/test.sql
+      - ../tables.sql:/data/tables.sql
     entrypoint: 
       - /bin/bash
       - -c
@@ -76,7 +76,7 @@ services:
           sleep 5
         done
         echo -e "\n\n-> Running SQL commands\n"
-        cat /data/test.sql <(echo 'EXIT')| ksql http://ksqldb-server:8088
+        cat /data/tables.sql <(echo 'EXIT')| ksql http://ksqldb-server:8088
         echo -e "\n\n-> Sleeping…\n"
         sleep infinity
 
