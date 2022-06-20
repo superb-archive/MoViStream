@@ -29,19 +29,18 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
-    # entrypoint: [ '/bin/sh', '-c' ]
-    # command: |
-    #   "
-    #   # blocks until kafka is reachable
-    #   kafka-topics --bootstrap-server broker:9092 --list
+  kafka-init:
+    image: monasca/kafka-init
+    container_name: kafka-init
+    depends_on:
+      - zookeeper
+      - broker
+    environment:
+      KAFKA_CREATE_TOPICS: "labels:1:1,info:1:1"
+      ZOOKEEPER_CONNECTION_STRING: 'zookeeper:2181'
+      KAFKA_HOST: 'broker:9092'
+      KAFKA_TIMEOUT: 60
 
-    #   echo -e 'Creating kafka topics'
-    #   kafka-topics --bootstrap-server broker:9092 --create --if-not-exists --topic labels --replication-factor 1 --partitions 1
-    #   kafka-topics --bootstrap-server broker:9092 --create --if-not-exists --topic info --replication-factor 1 --partitions 1
-
-    #   echo -e 'Successfully created the following topics:'
-    #   kafka-topics --bootstrap-server broker:9092 --list
-    #   "
 
   ksqldb-server:
     image: confluentinc/cp-ksqldb-server:7.1.1
@@ -56,12 +55,45 @@ services:
       KSQL_BOOTSTRAP_SERVERS: broker:9092
       KSQL_KSQL_LOGGING_PROCESSING_STREAM_AUTO_CREATE: "true"
       KSQL_KSQL_LOGGING_PROCESSING_TOPIC_AUTO_CREATE: "true"
-
+  
   ksqldb-cli:
     image: confluentinc/cp-ksqldb-cli:7.1.1
     container_name: ksqldb-cli
     depends_on:
       - broker
       - ksqldb-server
-    entrypoint: /bin/sh
-    tty: true
+    volumes:
+      - ../tables.sql:/data/tables.sql
+    entrypoint: 
+      - /bin/bash
+      - -c
+      - |
+        echo -e "\n\n⏳ Waiting for ksqlDB to be available before launching CLI\n"
+        while [ $$(curl -s -o /dev/null -w %{http_code} http://ksqldb-server:8088/) -eq 000 ]
+        do 
+          echo -e $$(date) "ksqlDB Server HTTP state: " $$(curl -s -o /dev/null -w %{http_code} http://ksqldb-server:8088/) " (waiting for 200)"
+          sleep 5
+        done
+        echo -e "\n\n-> Running SQL commands\n"
+        cat /data/tables.sql <(echo 'EXIT')| ksql http://ksqldb-server:8088
+        echo -e "\n\n-> Sleeping…\n"
+        sleep infinity
+
+  control-center:
+    image: confluentinc/cp-enterprise-control-center:7.1.0
+    hostname: control-center
+    container_name: control-center
+    depends_on:
+      - broker
+      - ksqldb-server
+    ports:
+      - "9021:9021"
+    environment:
+      CONTROL_CENTER_BOOTSTRAP_SERVERS: 'broker:9092'
+      CONTROL_CENTER_KSQL_KSQLDB1_URL: "http://ksqldb-server:8088"
+      CONTROL_CENTER_KSQL_KSQLDB1_ADVERTISED_URL: "http://localhost:8088"
+      CONTROL_CENTER_REPLICATION_FACTOR: 1
+      CONTROL_CENTER_INTERNAL_TOPICS_PARTITIONS: 1
+      CONTROL_CENTER_MONITORING_INTERCEPTOR_TOPIC_PARTITIONS: 1
+      CONFLUENT_METRICS_TOPIC_REPLICATION: 1
+      PORT: 9021
