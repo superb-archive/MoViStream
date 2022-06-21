@@ -140,4 +140,5 @@ node_modules/
 # Others
 **/.DS_Store
 *.ipynb
-data
+data/BDD100k/*/train
+data/BDD100k/*/val

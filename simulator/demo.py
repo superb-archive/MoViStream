@@ -6,13 +6,11 @@ from typing import List
 from model import Image, Info, LabelFlattened
 from node import Node
 
-DATA_ROOT = "../data/BDD100k"
+DATA_ROOT = "../data"
 DATA_DIR = "demo"
-DATA_DIR = "val"  # uncomment this line to test with 10000 data
-# DATA_DIR = "train"  # uncomment this line to test with 70000 data
 
 POOL_SIZE = 2
-CONCURRENCY = 10
+CONCURRENCY = 4
 
 
 def simulate_node(args):
@@ -23,7 +21,7 @@ def simulate_node(args):
 
 def fetch_labels(file_name: str):
     # image labels
-    with open(f"{DATA_ROOT}/labels/{DATA_DIR}/{file_name}", "r") as rf:
+    with open(f"{DATA_ROOT}/{DATA_DIR}/images/{file_name}", "r") as rf:
         image_dict = json.loads(rf.read())
         image = Image(**image_dict)
         labels = [
@@ -42,7 +40,7 @@ def fetch_labels(file_name: str):
 
 def fetch_info(file_name: str):
     # sensor data
-    with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
+    with open(f"{DATA_ROOT}/{DATA_DIR}/info/{file_name}") as rf:
         info_dict = json.loads(rf.read())
         info = Info(**info_dict)
 
@@ -53,8 +51,9 @@ if __name__ == "__main__":
     conf = {"bootstrap.servers": "localhost:29092"}
     jobs: List[dict] = []
 
-    file_name_list = os.listdir(f"{DATA_ROOT}/labels/{DATA_DIR}")
+    file_name_list = os.listdir(f"{DATA_ROOT}/{DATA_DIR}/images")
     for file_name in file_name_list:
+        print(file_name)
         try:
             labels = fetch_labels(file_name=file_name)
             info = fetch_info(file_name=file_name)

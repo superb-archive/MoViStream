@@ -15,6 +15,7 @@ ijson = "*"
 mypy = "*"
 flake8 = "*"
 black = "*"
+ipython = {extras = ["notebook"], version = "*"}
 
 [requires]
 python_version = "3.9"
