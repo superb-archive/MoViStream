@@ -23,16 +23,10 @@
 
     ```sh
     $ cd simulator
-    $ python main.py
+    $ python main.py --data demo
     ```
 
-4. check messages
-   ```sh
-   $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic labels --from-beginning"
-   $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic info --from-beginning"
-   ```
-
-5. run dashboard
+4. run dashboard
 
     ```sh
     $ cd frontend

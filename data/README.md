@@ -19,11 +19,11 @@ You can download our preprocessed version from [this gdrive](https://drive.googl
         ```sh
         BDD100k
         ├── labels
-        │   ├── demo    # contains 5 json files
+        │   ├── demo    # contains 100 json files
         │   ├── train   # contains 70k json files
         │   └── val     # contains 10k json files
         └── info
-            ├── demo    # contains 5 json files
+            ├── demo    # contains 100 json files
             ├── train   # contains 70k json files
             └── val     # contains 10k json files
         ```

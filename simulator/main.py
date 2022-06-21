@@ -3,13 +3,16 @@ import os
 from multiprocessing import Pool
 from typing import List
 
+from cli import args
 from model import Image, Info, LabelFlattened
 from node import Node
 
 DATA_ROOT = "../data/BDD100k"
-DATA_DIR = "demo"
-DATA_DIR = "val"  # uncomment this line to test with 10000 data
-# DATA_DIR = "train"  # uncomment this line to test with 70000 data
+
+DATA_DIR = args.data
+if DATA_DIR not in ["demo", "train", "val"]:
+    print("data path needs to be one of demo/train/val")
+    exit()
 
 POOL_SIZE = 2
 CONCURRENCY = 10
