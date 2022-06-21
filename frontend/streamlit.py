@@ -1,11 +1,20 @@
 import time
 import warnings
 
+import numpy as np
+
 from labels import (
     get_category_index,
     get_scene_index,
     get_timeofday_index,
     get_weather_index,
+)
+
+from sample_data import (
+    get_fake_category_index,
+    get_fake_scene_index,
+    get_fake_timeofday_index,
+    get_fake_weather_index,
 )
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
@@ -15,17 +24,19 @@ import plotly.express as px
 
 import streamlit as st
 
+
 # set page layout
 st.set_page_config(
-    page_title="Streamlit App",
+    page_title="Autonomous Vehicle Intelligence",
     page_icon="🚘",
-    layout="wide",
+    # layout="wide",
     initial_sidebar_state="expanded",
 )
 
+st.title("Autonomous Vehicle Intelligence")
 
-st.title("Streamlit App")
 
+# set realtime button
 if "real_time" not in st.session_state:
     st.session_state["real_time"] = True
 
@@ -34,62 +45,70 @@ def switch_realtime():
     st.session_state["real_time"] = not st.session_state["real_time"]
 
 
-st.button("Real Time / Stop", on_click=switch_realtime)
+# set sidebar
+st.sidebar.subheader("Realtime options")
+st.sidebar.button("Real Time / Stop", on_click=switch_realtime)
 
+# set selectbox for choose data
+st.sidebar.subheader("Choose type of data")
+kind_of_data = st.sidebar.selectbox(
+    "Choose data",
+    ["category", "weather", "scene", "timeofday"],
+    index=0,
+)
 
+# draw map
+df = pd.DataFrame(
+    np.random.randn(1000, 2) / [50, 50] + [37.76, -122.4], columns=["lat", "lon"]
+)
+if "real_time" in st.session_state and st.session_state["real_time"]:
+    st.map(df)
+
+# draw pie chart
 placeholder = st.empty()
-
-
 while "real_time" in st.session_state and st.session_state["real_time"]:
     with placeholder.container():
-        category_df = pd.DataFrame()
-        for data in get_category_index():
-            if data.get("row"):
-                row = data["row"]["columns"]
-                category_df = category_df.append(
-                    pd.DataFrame([row], columns=["category", "total"]),
-                    ignore_index=True,
-                )
-        category_fig = px.pie(category_df, values="total", names="category")
+        if kind_of_data == "category":
+            category_df = pd.DataFrame()
+            for data in get_fake_category_index():
+                if data.get("row"):
+                    row = data["row"]["columns"]
+                    category_df = category_df.append(
+                        pd.DataFrame([row], columns=["category", "total"]),
+                        ignore_index=True,
+                    )
+            fig = px.pie(category_df, values="total", names="category")
+        elif kind_of_data == "weather":
+            weather_df = pd.DataFrame()
+            for data in get_fake_weather_index():
+                if data.get("row"):
+                    row = data["row"]["columns"]
+                    weather_df = weather_df.append(
+                        pd.DataFrame([row], columns=["weather", "total"]),
+                        ignore_index=True,
+                    )
+            fig = px.pie(weather_df, values="total", names="weather")
+        elif kind_of_data == "scene":
+            scene_df = pd.DataFrame()
+            for data in get_fake_scene_index():
+                if data.get("row"):
+                    row = data["row"]["columns"]
+                    scene_df = scene_df.append(
+                        pd.DataFrame([row], columns=["scene", "total"]),
+                        ignore_index=True,
+                    )
+            fig = px.pie(scene_df, values="total", names="scene")
+        elif kind_of_data == "timeofday":
+            timeofday_df = pd.DataFrame()
+            for data in get_fake_timeofday_index():
+                if data.get("row"):
+                    row = data["row"]["columns"]
+                    timeofday_df = timeofday_df.append(
+                        pd.DataFrame([row], columns=["timeofday", "total"]),
+                        ignore_index=True,
+                    )
+            fig = px.pie(timeofday_df, values="total", names="timeofday")
 
-        weather_df = pd.DataFrame()
-        for data in get_weather_index():
-            if data.get("row"):
-                row = data["row"]["columns"]
-                weather_df = weather_df.append(
-                    pd.DataFrame([row], columns=["weather", "total"]),
-                    ignore_index=True,
-                )
-        weather_fig = px.pie(weather_df, values="total", names="weather")
-
-        scene_df = pd.DataFrame()
-        for data in get_scene_index():
-            if data.get("row"):
-                row = data["row"]["columns"]
-                scene_df = scene_df.append(
-                    pd.DataFrame([row], columns=["scene", "total"]),
-                    ignore_index=True,
-                )
-        scene_fig = px.pie(scene_df, values="total", names="scene")
-
-        timeofday_df = pd.DataFrame()
-        for data in get_timeofday_index():
-            if data.get("row"):
-                row = data["row"]["columns"]
-                timeofday_df = timeofday_df.append(
-                    pd.DataFrame([row], columns=["timeofday", "total"]),
-                    ignore_index=True,
-                )
-        timeofday_fig = px.pie(timeofday_df, values="total", names="timeofday")
-
-        fig_col1, fig_col2 = st.columns(2)
-
-        with fig_col1:
-            st.plotly_chart(category_fig, use_container_width=True)
-            st.plotly_chart(scene_fig, use_container_width=True)
-
-        with fig_col2:
-            st.plotly_chart(weather_fig, use_container_width=True)
-            st.plotly_chart(timeofday_fig, use_container_width=True)
+        st.plotly_chart(fig)
 
     time.sleep(1)
