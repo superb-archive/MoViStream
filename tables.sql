@@ -10,6 +10,22 @@ CREATE TABLE labels (
   );
 
 
+CREATE TABLE info (
+    image_id VARCHAR PRIMARY KEY,
+    timelapse INT,
+    startTime INT,
+    endTime INT
+) WITH (
+    KAFKA_TOPIC = 'info',
+    VALUE_FORMAT = 'JSON'
+);
+
+CREATE TABLE info_query WITH (KEY_FORMAT = 'JSON') AS
+SELECT *
+FROM
+info;
+
+
 CREATE TABLE category_index
     WITH (KEY_FORMAT='JSON') AS
     SELECT
