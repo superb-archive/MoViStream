@@ -2,8 +2,8 @@ import time
 import warnings
 
 from labels import (
-    get_gps_index,
     get_category_index,
+    get_gps_index,
     get_scene_index,
     get_timeofday_index,
     get_weather_index,
@@ -28,15 +28,16 @@ st.title("Autonomous Vehicle Intelligence")
 
 # set sidebar
 # set selectbox for choose data
-st.sidebar.subheader("Choose type of data")
+st.sidebar.subheader("Select a filter")
 kind_of_data = st.sidebar.selectbox(
     "",
     ["category", "weather", "scene", "timeofday"],
     index=0,
 )
-
+print(kind_of_data)
 # draw map
 map_df = pd.DataFrame()
+print(len(get_gps_index()))
 for data in get_gps_index():
     if data.get("row"):
         row = data["row"]["columns"]
@@ -44,7 +45,6 @@ for data in get_gps_index():
             pd.DataFrame([row], columns=["longitude", "latitude"]),
             ignore_index=True,
         )
-print(map_df)
 st.map(map_df)
 
 
@@ -94,4 +94,4 @@ with placeholder.container():
 
     st.plotly_chart(fig)
 
-time.sleep(1)
+time.sleep(5)

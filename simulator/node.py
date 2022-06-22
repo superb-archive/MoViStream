@@ -3,7 +3,7 @@ from typing import List
 
 from confluent_kafka import Producer
 
-from model import GPSFlattened, LabelFlattened
+from model import LabelFlattened, LocationFlattened
 
 
 class Node:
@@ -20,12 +20,12 @@ class Node:
             )
             self.producer.flush()
 
-    def produce_gpss(self, gpss: List[GPSFlattened]):
+    def produce_locations(self, locations: List[LocationFlattened]):
 
-        for gps in gpss:
+        for location in locations:
             self.producer.produce(
-                topic="gps",
-                value=json.dumps(gps.dict()),
-                key=gps.id,
+                topic="locations",
+                value=json.dumps(location.dict()),
+                key=location.id,
             )
             self.producer.flush()

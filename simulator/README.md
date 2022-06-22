@@ -2,7 +2,7 @@
 
 ## Dataset
 
-We use BDD100k dataset to simulate multiple vehicles (i.e. nodes) producing real-time events to Kafka. The simulator streams on-device machine learning inference results (ex, labels) and vehicular sensor data (ex, location and velocity) to a kafka cluster (local / cloud).
+We use BDD100k dataset to simulate multiple vehicles (i.e. nodes), each producing event streams to Kafka. The simulator sends on-device machine learning inference results (ex, labels) and vehicular sensor data (ex, location and velocity) to a kafka cluster (local / cloud).
 
 ## Instructions
 

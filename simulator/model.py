@@ -81,16 +81,15 @@ class GPS(BaseModel):
     speed: float
 
 
-class GPSFlattened(BaseModel):
+class LocationFlattened(BaseModel):
     id: str
     image_id: str
     timestamp: int
-    altitude: float
     longitude: float
-    # vertical_accuracy: float = Field(alias="vertical accuracy")
-    # horizontal_accuracy: float = Field(alias="horizontal accuracy")
     latitude: float
+    course: float
     speed: float
+    accuracy: float
 
 
 class Info(BaseModel):

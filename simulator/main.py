@@ -4,7 +4,7 @@ from multiprocessing import Pool
 from typing import List
 
 from cli import args
-from model import GPSFlattened, Image, Info, LabelFlattened
+from model import Image, Info, LabelFlattened, LocationFlattened
 from node import Node
 
 DATA_ROOT = "../data/BDD100k"
@@ -21,7 +21,7 @@ CONCURRENCY = 10
 def simulate_node(args):
     node = Node(args["conf"])
     node.produce_labels(args["labels"])
-    node.produce_gpss(args["gpss"])
+    node.produce_locations(args["locations"])
 
 
 def fetch_labels(file_name: str):
@@ -44,17 +44,19 @@ def fetch_labels(file_name: str):
     return labels
 
 
-def fetch_gpss(file_name: str):
+def fetch_locations(file_name: str):
     # sensor data
     with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
         info_dict = json.loads(rf.read())
         info = Info(**info_dict)
-        gpss = [
-            GPSFlattened(id=f"{file_name}#{i}", image_id=file_name, **gps.dict())
-            for i, gps in enumerate(info.gps)
+        locations = [
+            LocationFlattened(
+                id=f"{file_name}#{i}", image_id=file_name, **location.dict()
+            )
+            for i, location in enumerate(info.locations)
         ]
 
-    return gpss
+    return locations
 
 
 if __name__ == "__main__":
@@ -66,8 +68,8 @@ if __name__ == "__main__":
     for file_name in file_name_list:
         try:
             labels = fetch_labels(file_name=file_name)
-            gpss = fetch_gpss(file_name=file_name)
-            args = {"conf": conf, "labels": labels, "gpss": gpss}
+            locations = fetch_locations(file_name=file_name)
+            args = {"conf": conf, "labels": labels, "locations": locations}
             jobs.append(args)
         except Exception as e:
             # print(file_name)

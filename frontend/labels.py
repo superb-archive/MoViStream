@@ -1,10 +1,11 @@
 import json
+
 from ksql import KSQLAPI
 
 
 def get_gps_index() -> list:
     client = KSQLAPI("http://localhost:8088")
-    query = client.query("SELECT LONGITUDE, LATITUDE FROM gps_query")
+    query = client.query("SELECT LONGITUDE, LATITUDE FROM locations_query")
 
     results = []
 
