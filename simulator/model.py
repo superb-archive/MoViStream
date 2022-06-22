@@ -40,6 +40,7 @@ class Label(BaseModel):
 
 
 class LabelFlattened(BaseModel):
+    image_id: str
     category: str
     id: str
     scene: str
@@ -81,6 +82,7 @@ class GPS(BaseModel):
 
 
 class Info(BaseModel):
+    image_id: str
     rideID: str
     accelerometer: List[XYZT]
     gyro: List[XYZT]
