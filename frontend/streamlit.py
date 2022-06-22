@@ -70,7 +70,7 @@ init_locations = {
     "US East": {"lat": 40.7128, "lon": -74.0060},
     "Israel": {"lat": 31.0461, "lon": 34.8516},
 }
-dot_radius = st.sidebar.number_input("dot radius", 10, 1000, 500)
+dot_radius = st.sidebar.number_input("dot radius", 10, 1000, 100)
 
 st.sidebar.subheader("Labels")
 # labels
