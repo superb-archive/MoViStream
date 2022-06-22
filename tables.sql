@@ -16,21 +16,24 @@ SELECT
 FROM
     labels;
 
-CREATE TABLE info (
-    image_id VARCHAR PRIMARY KEY,
-    timelapse INT,
-    startTime INT,
-    endTime INT
+CREATE TABLE gps (
+    id VARCHAR PRIMARY KEY,
+    image_id VARCHAR,
+    "timestamp" INT,
+    altitude DOUBLE,
+    longitude DOUBLE,
+    latitude DOUBLE,
+    speed DOUBLE
 ) WITH (
-    KAFKA_TOPIC = 'info',
+    KAFKA_TOPIC = 'gps',
     VALUE_FORMAT = 'JSON'
 );
 
-CREATE TABLE info_query WITH (KEY_FORMAT = 'JSON') AS
+CREATE TABLE gps_query WITH (KEY_FORMAT = 'JSON') AS
 SELECT
     *
 FROM
-    info;
+    gps;
 
 CREATE TABLE category_index WITH (KEY_FORMAT = 'JSON') AS
 SELECT
@@ -68,15 +71,15 @@ FROM
 GROUP BY
     weather;
 
-CREATE TABLE LABELS_INFO AS
-SELECT
-    *
-FROM
-    LABELS L
-    INNER JOIN INFO I ON L.IMAGE_ID = I.IMAGE_ID;
+-- CREATE TABLE LABELS_WITH_GPS AS
+-- SELECT
+--     *
+-- FROM
+--     LABELS L
+--     INNER JOIN GPS G ON L.IMAGE_ID = G.IMAGE_ID;
 
-CREATE TABLE LABELS_INFO_QUERY WITH (KEY_FORMAT = 'JSON') AS
-SELECT
-    *
-FROM
-    LABELS_INFO;
+-- CREATE TABLE LABELS_WITH_GPS_QUERY WITH (KEY_FORMAT = 'JSON') AS
+-- SELECT
+--     *
+-- FROM
+--     LABELS_WITH_GPS;

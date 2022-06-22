@@ -81,8 +81,19 @@ class GPS(BaseModel):
     speed: float
 
 
-class Info(BaseModel):
+class GPSFlattened(BaseModel):
+    id: str
     image_id: str
+    timestamp: int
+    altitude: float
+    longitude: float
+    # vertical_accuracy: float = Field(alias="vertical accuracy")
+    # horizontal_accuracy: float = Field(alias="horizontal accuracy")
+    latitude: float
+    speed: float
+
+
+class Info(BaseModel):
     rideID: str
     accelerometer: List[XYZT]
     gyro: List[XYZT]
@@ -91,5 +102,4 @@ class Info(BaseModel):
     filename: str
     startTime: int
     endTime: int
-    id: str
     gps: List[GPS]
