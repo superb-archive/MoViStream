@@ -31,6 +31,7 @@ def fetch_labels(file_name: str):
         image = Image(**image_dict)
         labels = [
             LabelFlattened(
+                image_id=file_name,
                 id=f"{image.name}#{label.id}",
                 category=label.category,
                 scene=image.attributes.scene,
@@ -47,7 +48,7 @@ def fetch_info(file_name: str):
     # sensor data
     with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
         info_dict = json.loads(rf.read())
-        info = Info(**info_dict)
+        info = Info(image_id=file_name, **info_dict)
 
     return info
 
@@ -57,21 +58,22 @@ if __name__ == "__main__":
     jobs: List[dict] = []
 
     file_name_list = os.listdir(f"{DATA_ROOT}/labels/{DATA_DIR}")
-    for file_name in file_name_list:
-        try:
-            labels = fetch_labels(file_name=file_name)
-            info = fetch_info(file_name=file_name)
-            args = {"conf": conf, "labels": labels, "info": info}
-            jobs.append(args)
-        except Exception:
-            pass
+    while True:
+        for file_name in file_name_list:
+            try:
+                labels = fetch_labels(file_name=file_name)
+                info = fetch_info(file_name=file_name)
+                args = {"conf": conf, "labels": labels, "info": info}
+                jobs.append(args)
+            except Exception:
+                pass
 
-        if len(jobs) == CONCURRENCY:
+            if len(jobs) == CONCURRENCY:
+                with Pool(POOL_SIZE) as p:
+                    p.map(simulate_node, jobs)
+                jobs = []
+
+        if len(jobs):
             with Pool(POOL_SIZE) as p:
                 p.map(simulate_node, jobs)
             jobs = []
-
-    if len(jobs):
-        with Pool(POOL_SIZE) as p:
-            p.map(simulate_node, jobs)
-        jobs = []
