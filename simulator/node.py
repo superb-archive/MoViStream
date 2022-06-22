@@ -82,3 +82,14 @@ class Node:
             )
             self.producer.flush()
             time.sleep(sleep_interval)
+
+    # def produce_accelerometer(self):
+    #     sleep_interval = 40 / len(self.accelerometer)
+    #     for accel in self.accelerometer:
+    #         self.producer.produce(
+    #             topic="locations",
+    #             value=json.dumps(accel.dict()),
+    #             key=accel.id,
+    #         )
+    #         self.producer.flush()
+    #         time.sleep(sleep_interval)

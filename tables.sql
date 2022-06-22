@@ -70,15 +70,42 @@ FROM
 GROUP BY
     weather;
 
+CREATE TABLE label_count WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    image_id,
+    COUNT(*) AS total
+FROM
+    labels
+GROUP BY
+    image_id;
+
+CREATE TABLE trajectory_length WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    image_id,
+    COUNT(*) AS total
+FROM
+    locations
+GROUP BY
+    image_id;
+
 -- CREATE TABLE VEHICLE AS
+
 -- SELECT
+
 --     *
+
 -- FROM
+
 --     LABELS L
+
 --     INNER JOIN LOCATIONS G ON L.IMAGE_ID = G.IMAGE_ID;
 
 -- CREATE TABLE LABELS_WITH_LOCATIONS_QUERY WITH (KEY_FORMAT = 'JSON') AS
+
 -- SELECT
+
 --     *
+
 -- FROM
+
 --     LABELS_WITH_LOCATIONS;
