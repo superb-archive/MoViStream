@@ -4,7 +4,7 @@ from multiprocessing import Pool
 from typing import List
 
 from cli import args
-from model import Image, Info, LabelFlattened
+from model import GPSFlattened, Image, Info, LabelFlattened
 from node import Node
 
 DATA_ROOT = "../data/BDD100k"
@@ -21,7 +21,7 @@ CONCURRENCY = 10
 def simulate_node(args):
     node = Node(args["conf"])
     node.produce_labels(args["labels"])
-    node.produce_info(args["info"])
+    node.produce_gpss(args["gpss"])
 
 
 def fetch_labels(file_name: str):
@@ -32,7 +32,7 @@ def fetch_labels(file_name: str):
         labels = [
             LabelFlattened(
                 image_id=file_name,
-                id=f"{image.name}#{label.id}",
+                id=f"{file_name}#{label.id}",
                 category=label.category,
                 scene=image.attributes.scene,
                 timeofday=image.attributes.timeofday,
@@ -44,13 +44,17 @@ def fetch_labels(file_name: str):
     return labels
 
 
-def fetch_info(file_name: str):
+def fetch_gpss(file_name: str):
     # sensor data
     with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
         info_dict = json.loads(rf.read())
-        info = Info(image_id=file_name, **info_dict)
+        info = Info(**info_dict)
+        gpss = [
+            GPSFlattened(id=f"{file_name}#{i}", image_id=file_name, **gps.dict())
+            for i, gps in enumerate(info.gps)
+        ]
 
-    return info
+    return gpss
 
 
 if __name__ == "__main__":
@@ -58,22 +62,23 @@ if __name__ == "__main__":
     jobs: List[dict] = []
 
     file_name_list = os.listdir(f"{DATA_ROOT}/labels/{DATA_DIR}")
-    while True:
-        for file_name in file_name_list:
-            try:
-                labels = fetch_labels(file_name=file_name)
-                info = fetch_info(file_name=file_name)
-                args = {"conf": conf, "labels": labels, "info": info}
-                jobs.append(args)
-            except Exception:
-                pass
+    # while True:
+    for file_name in file_name_list:
+        try:
+            labels = fetch_labels(file_name=file_name)
+            gpss = fetch_gpss(file_name=file_name)
+            args = {"conf": conf, "labels": labels, "gpss": gpss}
+            jobs.append(args)
+        except Exception as e:
+            # print(file_name)
+            pass
 
-            if len(jobs) == CONCURRENCY:
-                with Pool(POOL_SIZE) as p:
-                    p.map(simulate_node, jobs)
-                jobs = []
-
-        if len(jobs):
+        if len(jobs) == CONCURRENCY:
             with Pool(POOL_SIZE) as p:
                 p.map(simulate_node, jobs)
             jobs = []
+
+    if len(jobs):
+        with Pool(POOL_SIZE) as p:
+            p.map(simulate_node, jobs)
+        jobs = []
