@@ -5,7 +5,7 @@ from typing import List
 from confluent_kafka import Producer
 
 from cli import args
-from model import Image, Info, LabelFlattened, LocationFlattened
+from model import AccelerometerFlattened, Image, Info, LabelFlattened, LocationFlattened
 
 DATA_ROOT = "../data/BDD100k"
 
@@ -55,14 +55,33 @@ def fetch_locations(file_name: str):
     return locations
 
 
+def fetch_accelerometer(file_name: str):
+    # sensor data
+    try:
+        with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
+            info_dict = json.loads(rf.read())
+            info = Info(**info_dict)
+            accelerometer = [
+                AccelerometerFlattened(
+                    id=f"{file_name}#{i}", image_id=file_name, **accel.dict()
+                )
+                for i, accel in enumerate(info.accelerometer)
+            ]
+    except Exception:
+        accelerometer = []
+    return accelerometer
+
+
 class Node:
     def __init__(self, conf, file_name) -> None:
         self.producer = Producer(conf)
         self.labels: List[LabelFlattened] = fetch_labels(file_name=file_name)
         self.locations: List[LocationFlattened] = fetch_locations(file_name=file_name)
+        self.accelerometer: List[AccelerometerFlattened] = fetch_accelerometer(
+            file_name=file_name
+        )
 
     def produce_labels(self):
-        sleep_interval = 40 / len(self.labels)
         for label in self.labels:
             self.producer.produce(
                 topic="labels",
@@ -70,10 +89,9 @@ class Node:
                 key=label.id,
             )
             self.producer.flush()
-            time.sleep(sleep_interval)
+            time.sleep(40 / len(self.labels))
 
     def produce_locations(self):
-        sleep_interval = 40 / len(self.locations)
         for location in self.locations:
             self.producer.produce(
                 topic="locations",
@@ -81,15 +99,14 @@ class Node:
                 key=location.id,
             )
             self.producer.flush()
-            time.sleep(sleep_interval)
+            time.sleep(40 / len(self.locations))
 
-    # def produce_accelerometer(self):
-    #     sleep_interval = 40 / len(self.accelerometer)
-    #     for accel in self.accelerometer:
-    #         self.producer.produce(
-    #             topic="locations",
-    #             value=json.dumps(accel.dict()),
-    #             key=accel.id,
-    #         )
-    #         self.producer.flush()
-    #         time.sleep(sleep_interval)
+    def produce_accelerometer(self):
+        for accel in self.accelerometer:
+            self.producer.produce(
+                topic="accelerometer",
+                value=json.dumps(accel.dict()),
+                key=accel.id,
+            )
+            self.producer.flush()
+            time.sleep(40 / len(self.accelerometer))

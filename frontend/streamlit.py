@@ -8,6 +8,7 @@ from streamlit_autorefresh import st_autorefresh
 
 import streamlit as st
 from labels import (
+    get_accelerometer_index,
     get_category_index,
     get_gps_index,
     get_random_10_vehicles,
@@ -80,7 +81,7 @@ label_filter = st.sidebar.selectbox(
 )
 # ========================== SIDEBAR ==========================
 
-col1, col2 = st.columns([1, 1])
+
 # ============================ MAP ============================
 map_df = pd.DataFrame()
 for data in get_gps_index(filter_query=filter_query):
@@ -114,37 +115,66 @@ if vehicle_to_track is None:
         )
     )
 else:
-    try:
-        init_location = {"lat": map_df["lat"][0], "lon": map_df["lon"][0]}
-    except Exception:
-        "the vehicle has no trajectory"
-        init_location = init_locations[region]
-    init_zoom = 15
-    dot_radius = 10
-    if "trajectory_end_index" not in st.session_state:
-        st.session_state["trajectory_end_index"] = 0
-    st.session_state["trajectory_end_index"] += 3
-    st.session_state["trajectory_end_index"] %= len(map_df)
-    st.pydeck_chart(
-        pdk.Deck(
-            map_style="mapbox://styles/mapbox/light-v9",
-            initial_view_state=pdk.ViewState(
-                latitude=init_location["lat"],
-                longitude=init_location["lon"],
-                zoom=init_zoom,
-            ),
-            layers=[
-                pdk.Layer(
-                    "ScatterplotLayer",
-                    data=map_df[: st.session_state["trajectory_end_index"]],
-                    get_position="[lon, lat]",
-                    get_color="[200, 30, 0, 160]",
-                    get_radius=dot_radius,
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        try:
+            init_location = {"lat": map_df["lat"][0], "lon": map_df["lon"][0]}
+        except Exception:
+            "the vehicle has no trajectory"
+            init_location = init_locations[region]
+        init_zoom = 15
+        dot_radius = 10
+        if "trajectory_end_index" not in st.session_state:
+            st.session_state["trajectory_end_index"] = 0
+        st.session_state["trajectory_end_index"] += 3
+        if len(map_df):
+            st.session_state["trajectory_end_index"] %= len(map_df)
+        st.pydeck_chart(
+            pdk.Deck(
+                map_style="mapbox://styles/mapbox/light-v9",
+                initial_view_state=pdk.ViewState(
+                    latitude=init_location["lat"],
+                    longitude=init_location["lon"],
+                    zoom=init_zoom,
                 ),
-            ],
+                layers=[
+                    pdk.Layer(
+                        "ScatterplotLayer",
+                        data=map_df[: st.session_state["trajectory_end_index"]],
+                        get_position="[lon, lat]",
+                        get_color="[200, 30, 0, 160]",
+                        get_radius=dot_radius,
+                    ),
+                ],
+            )
         )
-    )
-    time.sleep(1)
+    with col2:
+        accel_df = pd.DataFrame(columns=["X", "Y", "Z"])
+        for data in get_accelerometer_index(filter_query=filter_query):
+            if data.get("row"):
+                row = data["row"]["columns"]
+                accel_df = accel_df.append(
+                    pd.DataFrame([row], columns=["X", "Y", "Z"]),
+                    ignore_index=True,
+                )
+        if "accelerometer_end_index" not in st.session_state:
+            st.session_state["accelerometer_end_index"] = 0
+        st.session_state["accelerometer_end_index"] += 3
+        if len(accel_df):
+            st.session_state["accelerometer_end_index"] %= len(accel_df)
+        else:
+            accel_df = accel_df.append(
+                pd.DataFrame(
+                    [
+                        [0, 0, 0],
+                    ],
+                    columns=["X", "Y", "Z"],
+                ),
+                ignore_index=True,
+            )
+            "the vehicle has no IMU records"
+        print(accel_df)
+        st.line_chart(accel_df)
 
 # ============================ MAP ============================
 

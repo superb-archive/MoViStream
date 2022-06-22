@@ -34,6 +34,24 @@ SELECT
 FROM
     locations;
 
+CREATE TABLE accelerometer (
+    id VARCHAR PRIMARY KEY,
+    image_id VARCHAR,
+    "timestamp" INT,
+    x DOUBLE,
+    y DOUBLE,
+    z DOUBLE
+) WITH (
+    KAFKA_TOPIC = 'accelerometer',
+    VALUE_FORMAT = 'JSON'
+);
+
+CREATE TABLE accelerometer_query WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    *
+FROM
+    accelerometer;
+
 CREATE TABLE category_index WITH (KEY_FORMAT = 'JSON') AS
 SELECT
     category,

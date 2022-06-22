@@ -21,10 +21,13 @@ def simulate_node(args):
     node = Node(args["conf"], args["file_name"])
     thread1 = Thread(target=node.produce_labels)
     thread2 = Thread(target=node.produce_locations)
+    thread3 = Thread(target=node.produce_accelerometer)
     thread1.start()
     thread2.start()
+    thread3.start()
     thread1.join()
     thread2.join()
+    thread3.join()
 
 
 if __name__ == "__main__":

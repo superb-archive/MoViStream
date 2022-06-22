@@ -3,6 +3,24 @@ import json
 from ksql import KSQLAPI
 
 
+def get_accelerometer_index(filter_query="") -> list:
+    client = KSQLAPI("http://localhost:8088")
+    query = client.query("SELECT x,y,z FROM accelerometer_query" + filter_query)
+
+    results = []
+
+    while True:
+        try:
+            result = next(query)
+            results.append(result)
+        except RuntimeError:
+            break
+
+    concat_result = "".join(results)
+    result_dict = json.loads(concat_result)
+    return result_dict
+
+
 def get_gps_index(filter_query="") -> list:
     client = KSQLAPI("http://localhost:8088")
     query = client.query(
