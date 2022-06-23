@@ -34,6 +34,24 @@ SELECT
 FROM
     locations;
 
+CREATE TABLE accelerometer (
+    id VARCHAR PRIMARY KEY,
+    image_id VARCHAR,
+    "timestamp" INT,
+    x DOUBLE,
+    y DOUBLE,
+    z DOUBLE
+) WITH (
+    KAFKA_TOPIC = 'accelerometer',
+    VALUE_FORMAT = 'JSON'
+);
+
+CREATE TABLE accelerometer_query WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    *
+FROM
+    accelerometer;
+
 CREATE TABLE category_index WITH (KEY_FORMAT = 'JSON') AS
 SELECT
     category,
@@ -70,7 +88,25 @@ FROM
 GROUP BY
     weather;
 
--- CREATE TABLE LABELS_WITH_Locations AS
+CREATE TABLE label_count WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    image_id,
+    COUNT(*) AS total
+FROM
+    labels
+GROUP BY
+    image_id;
+
+CREATE TABLE trajectory_length WITH (KEY_FORMAT = 'JSON') AS
+SELECT
+    image_id,
+    COUNT(*) AS total
+FROM
+    locations
+GROUP BY
+    image_id;
+
+-- CREATE TABLE VEHICLE AS
 
 -- SELECT
 
@@ -80,9 +116,9 @@ GROUP BY
 
 --     LABELS L
 
---     INNER JOIN Locations G ON L.IMAGE_ID = G.IMAGE_ID;
+--     INNER JOIN LOCATIONS G ON L.IMAGE_ID = G.IMAGE_ID;
 
--- CREATE TABLE LABELS_WITH_Locations_QUERY WITH (KEY_FORMAT = 'JSON') AS
+-- CREATE TABLE LABELS_WITH_LOCATIONS_QUERY WITH (KEY_FORMAT = 'JSON') AS
 
 -- SELECT
 
@@ -90,4 +126,4 @@ GROUP BY
 
 -- FROM
 
---     LABELS_WITH_Locations;
+--     LABELS_WITH_LOCATIONS;

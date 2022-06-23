@@ -36,7 +36,7 @@ services:
       - zookeeper
       - broker
     environment:
-      KAFKA_CREATE_TOPICS: "labels:1:1,gps:1:1"
+      KAFKA_CREATE_TOPICS: "labels:1:1,locations:1:1,accelerometer:1:1"
       ZOOKEEPER_CONNECTION_STRING: 'zookeeper:2181'
       KAFKA_HOST: 'broker:9092'
       KAFKA_TIMEOUT: 60

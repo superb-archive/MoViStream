@@ -10,6 +10,7 @@ streamlit = "*"
 plotly = "*"
 ksql = "*"
 ijson = "*"
+streamlit-autorefresh = "*"
 
 [dev-packages]
 mypy = "*"

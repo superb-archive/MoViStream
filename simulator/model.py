@@ -92,6 +92,15 @@ class LocationFlattened(BaseModel):
     accuracy: float
 
 
+class AccelerometerFlattened(BaseModel):
+    id: str
+    image_id: str
+    x: float
+    y: float
+    z: float
+    timestamp: int
+
+
 class Info(BaseModel):
     rideID: str
     accelerometer: List[XYZT]

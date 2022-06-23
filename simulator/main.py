@@ -1,10 +1,9 @@
-import json
 import os
 from multiprocessing import Pool
+from threading import Thread
 from typing import List
 
 from cli import args
-from model import Image, Info, LabelFlattened, LocationFlattened
 from node import Node
 
 DATA_ROOT = "../data/BDD100k"
@@ -14,49 +13,21 @@ if DATA_DIR not in ["demo", "train", "val"]:
     print("data path needs to be one of demo/train/val")
     exit()
 
-POOL_SIZE = 2
+POOL_SIZE = 16
 CONCURRENCY = 10
 
 
 def simulate_node(args):
-    node = Node(args["conf"])
-    node.produce_labels(args["labels"])
-    node.produce_locations(args["locations"])
-
-
-def fetch_labels(file_name: str):
-    # image labels
-    with open(f"{DATA_ROOT}/labels/{DATA_DIR}/{file_name}", "r") as rf:
-        image_dict = json.loads(rf.read())
-        image = Image(**image_dict)
-        labels = [
-            LabelFlattened(
-                image_id=file_name,
-                id=f"{file_name}#{label.id}",
-                category=label.category,
-                scene=image.attributes.scene,
-                timeofday=image.attributes.timeofday,
-                weather=image.attributes.weather,
-            )
-            for label in image.labels
-        ]
-
-    return labels
-
-
-def fetch_locations(file_name: str):
-    # sensor data
-    with open(f"{DATA_ROOT}/info/{DATA_DIR}/{file_name}") as rf:
-        info_dict = json.loads(rf.read())
-        info = Info(**info_dict)
-        locations = [
-            LocationFlattened(
-                id=f"{file_name}#{i}", image_id=file_name, **location.dict()
-            )
-            for i, location in enumerate(info.locations)
-        ]
-
-    return locations
+    node = Node(args["conf"], args["file_name"])
+    thread1 = Thread(target=node.produce_labels)
+    thread2 = Thread(target=node.produce_locations)
+    thread3 = Thread(target=node.produce_accelerometer)
+    thread1.start()
+    thread2.start()
+    thread3.start()
+    thread1.join()
+    thread2.join()
+    thread3.join()
 
 
 if __name__ == "__main__":
@@ -67,13 +38,11 @@ if __name__ == "__main__":
     # while True:
     for file_name in file_name_list:
         try:
-            labels = fetch_labels(file_name=file_name)
-            locations = fetch_locations(file_name=file_name)
-            args = {"conf": conf, "labels": labels, "locations": locations}
+            args = {"conf": conf, "file_name": file_name}
             jobs.append(args)
         except Exception as e:
             # print(file_name)
-            pass
+            e
 
         if len(jobs) == CONCURRENCY:
             with Pool(POOL_SIZE) as p:
