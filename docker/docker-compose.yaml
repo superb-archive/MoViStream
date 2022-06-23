@@ -63,7 +63,7 @@ services:
       - broker
       - ksqldb-server
     volumes:
-      - ../tables.sql:/data/tables.sql
+      - ./tables.sql:/data/tables.sql
     entrypoint:
       - /bin/bash
       - -c

@@ -6,7 +6,8 @@ from typing import List
 from cli import args
 from node import Node
 
-DATA_ROOT = "../data/BDD100k"
+DATASET = "BDD100k"
+DATA_ROOT = f"{os.path.dirname(os.path.abspath(__file__))}/../data/{DATASET}"
 
 DATA_DIR = args.data
 if DATA_DIR not in ["demo", "train", "val"]:
@@ -34,17 +35,21 @@ if __name__ == "__main__":
     conf = {"bootstrap.servers": "localhost:29092"}
     jobs: List[dict] = []
 
+    print(f"fetching data from {DATASET} dataset with [{DATA_DIR}] split...")
     file_name_list = os.listdir(f"{DATA_ROOT}/labels/{DATA_DIR}")
+
+    print("simulating vehicles...")
     # while True:
     for file_name in file_name_list:
         try:
             args = {"conf": conf, "file_name": file_name}
             jobs.append(args)
-        except Exception as e:
-            # print(file_name)
-            e
+        except Exception:
+            print(f"skip vehicle {file_name} (incomplete data)")
+            pass
 
         if len(jobs) == CONCURRENCY:
+            print(f"dispatching {len(jobs)} events...")
             with Pool(POOL_SIZE) as p:
                 p.map(simulate_node, jobs)
             jobs = []
@@ -53,3 +58,4 @@ if __name__ == "__main__":
         with Pool(POOL_SIZE) as p:
             p.map(simulate_node, jobs)
         jobs = []
+    print("simulation finished")

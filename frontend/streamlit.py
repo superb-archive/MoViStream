@@ -1,4 +1,3 @@
-import time
 import warnings
 
 import pandas as pd
@@ -7,7 +6,7 @@ import pydeck as pdk
 from streamlit_autorefresh import st_autorefresh
 
 import streamlit as st
-from labels import (
+from apis import (
     get_accelerometer_index,
     get_category_index,
     get_gps_index,
@@ -173,7 +172,6 @@ else:
                 ignore_index=True,
             )
             "the vehicle has no IMU records"
-        print(accel_df)
         st.line_chart(accel_df)
 
 # ============================ MAP ============================

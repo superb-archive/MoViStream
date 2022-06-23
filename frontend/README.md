@@ -5,7 +5,7 @@
 Streamlit is a data visualization toolkit built for python users.
 It queries data from KSQL and visualizes the result using various widgets.
 
-### KSQL
+### KSQL APIs
 
 Instead of directly streaming the data straight from Kafka, we took the full advantage of KSQL, transforming and aggregating the stream of real-time data into the exact format we desire. This is an example of how we configured KSQL tables to aggregate the sum of each label category.
 ```bash
@@ -44,7 +44,7 @@ One use case of autonomous vehicle data is live localization with gps data.
 We visualize vehicle locations and trajectories on OpenStreetMap using deckgl.
 
 Inertial measurement unit is another metric commonly collected from smart vehicles.
-The accelerometer & gyroscope data is visualized using streamlit line charts.
+As an example, the accelerometer data is visualized using streamlit line charts.
 
 ### Image Labels
 
