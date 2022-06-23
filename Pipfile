@@ -5,11 +5,10 @@ name = "pypi"
 
 [packages]
 confluent-kafka = "*"
+ksql = "*"
 pydantic = "*"
 streamlit = "*"
 plotly = "*"
-ksql = "*"
-ijson = "*"
 streamlit-autorefresh = "*"
 
 [dev-packages]
