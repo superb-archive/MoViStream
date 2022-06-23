@@ -1,5 +1,5 @@
 # Overview
-- kafka-hackathon 실행을 위한 컨테이너 환경 구성
+- environmental setup instructions for running the project
 
 ## Getting Started
 
