@@ -1,4 +1,4 @@
-# MobiStream
+# MoViStream
 
 [![Python 3.9](https://img.shields.io/badge/python-3.9-blue.svg)](https://www.python.org/downloads/release/python-394/) [![version - 0.1](https://img.shields.io/badge/version-0.1-blue)](https://) [![contributor - 4](https://img.shields.io/badge/contributor-4-blue)](https://)
 
@@ -8,7 +8,7 @@ Submission for Kafka Summit Hackathon 2022
 
 ## Overview
 
-MobiStream is an end-to-end platform for streaming, monitoring and visualizing sensor data from smart vehicles.
+MoViStream is an end-to-end platform for streaming, monitoring and visualizing sensor data from smart vehicles.
 
 ### Why smart vehicles?
 
@@ -46,7 +46,7 @@ This project has been developed and tested in the following environment. Note th
 
 ### Getting Started
 
-Below instructions guide you through the end-to-end steps for running MobiStream.
+Below instructions guide you through the end-to-end steps for running MoViStream.
 
 1. docker setup
 

@@ -45,8 +45,8 @@ We used BDD100k dataset to simulate multiple vehicles (i.e. nodes), by having ea
         $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic labels --from-beginning"
         ```
 
-    - `info`  : vehicular sensor data
+    - `locations`  : vehicular sensor data
 
         ```sh
-        $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic info --from-beginning"
+        $ docker exec -it broker bash -c "kafka-console-consumer --bootstrap-server localhost:9092 --topic locations --from-beginning"
         ```
