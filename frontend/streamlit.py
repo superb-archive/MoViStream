@@ -19,7 +19,8 @@ from apis import (
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 
-st.title("Autonomous Vehicle Intelligence")
+st.title("MoViStream")
+st.subheader("Autonomous Vehicle Intelligence Platform")
 
 # ========================== SIDEBAR ==========================
 
