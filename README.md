@@ -95,16 +95,16 @@ Below instructions guide you through the end-to-end steps for running MoViStream
 
    - Explanations on visualized data are documented [here](./frontend/README.md).
 
-## Streamlit demo
+   recordings of a demo run
 
-### Visualize metadata using pie chart
+   - image metadata (labels)
 
-![](/image/pie-chart.gif)
+      ![](/image/pie-chart.gif)
 
-### Visualize vehicle location in map
+   - vehicle location
 
-![](/image/map.gif)
+      ![](/image/map.gif)
 
-### Visualize vehicle tracking
+   - vehicle tracking
 
-![](/image/tracking.gif)
+      ![](/image/tracking.gif)
