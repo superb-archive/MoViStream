@@ -89,14 +89,14 @@ Below instructions guide you through the end-to-end steps for running MobiStream
 
 ## Streamlit demo
 
-### metadata
+### Visualize metadata using pie chart
 
 ![](/image/pie-chart.gif)
 
-### vehicle location in map
+### Visualize vehicle location in map
 
 ![](/image/map.gif)
 
-### vehicle tracking
+### Visualize vehicle tracking
 
 ![](/image/tracking.gif)
