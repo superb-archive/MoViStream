@@ -2,8 +2,8 @@
 
 ## Streamlit
 
-Streamlit is a data visualization toolkit built for python users.
-It queries data from KSQL and visualizes the result using various widgets.
+Streamlit is a data visualization tool for python users.
+Our Streamlit app queries data from KSQL and visualizes the result using various widgets.
 
 ### KSQL APIs
 
@@ -40,7 +40,7 @@ We visualize the following data at a user-defined interval.
 
 ### GPS & IMU
 
-One use case of autonomous vehicle data is live localization with gps data.
+An example of an autonomous vehicle data is GPS data.
 We visualize vehicle locations and trajectories on OpenStreetMap using deckgl.
 
 Inertial measurement unit is another metric commonly collected from smart vehicles.
@@ -49,7 +49,7 @@ As an example, the accelerometer data is visualized using streamlit line charts.
 ### Image Labels
 
 An autonomous vehicle has many visual receptors such as cameras and lidar sensors.
-Often, computer vision techniques are used to understand (**infer** on) the scene.
+Thus, computer vision techniques are used to understand (**infer** on) the scene.
 
 Compiled from multiple vehicles, the inference results (labels) can useful for city monitoring.
 It can also be used by ML engineers or data scientists for collecting data (ex, rare labels).

@@ -12,19 +12,19 @@ MoViStream is an end-to-end platform for monitoring and visualizing sensor data 
 
 - Modern vehicles utilize various sensors (ex, gps, IMU, camera) to understand scenes (ex, autonomous driving).
 
-- This sensor data is valuable for controlling & monitoring other city infrastructure (ex, smart traffic lights).
+- This sensor data is valuable for controlling & monitoring other city infrastructures (ex, smart traffic lights).
 
 - The rich data can be used for training centralized ML models that are deployed to vehicles (i.e. federated learning).
 
 ### Why Kafka & KSQL?
 
-- Real-time sensor data from smart vehicles has very high volume and frequency, which requires a robust event-streaming technology.
+- Real-time sensor data from smart vehicles have very high volume and frequency, which requires a robust event-streaming technology.
 
-- Live monitoring as well as machine learning experiments require that data is stored and processed into various forms, on-demand.
+- Live monitoring as well as machine learning experiments require data to be stored and processed into various forms, on-demand.
 
 ### Components
 
-The subdirectories in the file tree are parts of the end-to-end platform, each equipped with a detailed description in repective README files. Following is a brief summary of each component.
+The subdirectories represent parts of the end-to-end platform, each equipped with a detailed description in their respective README files. Following is a brief summary of each component.
 
 
 | Component | Description                                               |
@@ -38,14 +38,18 @@ The subdirectories in the file tree are parts of the end-to-end platform, each e
 
 ### Requirements
 
-This project has been developed and tested in the following environment. Note that minor issues have been recorded while running the app in other environments
+This project has been developed and tested in the following environment. Note there could be issues when launching the app in other environments (OS, CPU architecture).
 
 - macOS or ubuntu 18.04 on Intel CPU & 16GB RAM
 - docker-compose, python 3.9, pipenv (version 2020.11.15)
 
 ### Getting Started
 
+<<<<<<< Updated upstream
 Below instructions guide you through the end-to-end steps for running MoViStream.
+=======
+Instructions below will guide you through the steps of running MobiStream.
+>>>>>>> Stashed changes
 
 1. docker setup
 
