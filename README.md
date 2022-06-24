@@ -1,4 +1,4 @@
-# MobiStream
+# MoViStream
 
 Submission for Kafka Summit Hackathon 2022
 
@@ -6,7 +6,7 @@ Submission for Kafka Summit Hackathon 2022
 
 ## Overview
 
-MobiStream is an end-to-end platform for streaming, monitoring and visualizing sensor data from smart vehicles.
+MoViStream is an end-to-end platform for monitoring and visualizing sensor data streams from smart vehicles.
 
 ### Why smart vehicles?
 
@@ -45,7 +45,7 @@ This project has been developed and tested in the following environment. Note th
 
 ### Getting Started
 
-Below instructions guide you through the end-to-end steps for running MobiStream.
+Below instructions guide you through the end-to-end steps for running MoViStream.
 
 1. docker setup
 
@@ -74,7 +74,7 @@ Below instructions guide you through the end-to-end steps for running MobiStream
     $ python simulator/main.py --data=demo
     ```
 
-    - Instructions on experimenting with the original source data is documented [here](./simulator/README.md)
+    - Instructions on experimenting with the original source data is documented [here](./data/README.md)
     - Details of the simulator are documented [here](./simulator/README.md).
 
 4. run dashboard
