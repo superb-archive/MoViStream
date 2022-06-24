@@ -68,7 +68,7 @@ region = st.sidebar.selectbox(
 init_locations = {
     "US West": {"lat": 37.4275, "lon": -122.168861},
     "US East": {"lat": 40.7128, "lon": -74.0060},
-    "Israel": {"lat": 31.0461, "lon": 34.8516},
+    "ME Asia": {"lat": 31.0461, "lon": 34.8516},
 }
 dot_radius = st.sidebar.number_input("dot radius", 10, 1000, 100)
 
