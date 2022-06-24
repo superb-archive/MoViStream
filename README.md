@@ -86,3 +86,17 @@ Below instructions guide you through the end-to-end steps for running MobiStream
    ```
 
    - Explanations on visualized data are documented [here](./frontend/README.md).
+
+## Streamlit demo
+
+### pie chart
+
+![](/image/pie-chart.gif)
+
+### Map
+
+![](/image/map.gif)
+
+### tracking
+
+![](/image/tracking.gif)
