@@ -1,4 +1,5 @@
 import json
+import os
 import time
 from typing import List
 
@@ -7,7 +8,8 @@ from confluent_kafka import Producer
 from cli import args
 from model import AccelerometerFlattened, Image, Info, LabelFlattened, LocationFlattened
 
-DATA_ROOT = "../data/BDD100k"
+DATASET = "BDD100k"
+DATA_ROOT = f"{os.path.dirname(os.path.abspath(__file__))}/../data/{DATASET}"
 
 DATA_DIR = args.data
 if DATA_DIR not in ["demo", "train", "val"]:
