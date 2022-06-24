@@ -56,6 +56,12 @@ Below instructions guide you through the end-to-end steps for running MoViStream
    $ docker-compose -f docker/docker-compose.yaml up -d
    ```
 
+   ![](/image/docker-compose.gif)
+
+   Open http://localhost:9092 in a browser to access control center.
+
+   ![](/image/control.gif)
+
    - Details of the containers are documented [here](./docker/README.md).
 
 2. install dependencies
@@ -66,6 +72,8 @@ Below instructions guide you through the end-to-end steps for running MoViStream
    $ pipenv install
    $ pipenv shell
    ```
+
+   ![](/image/pipenv-install.png)
 
 3. run simulator
 
