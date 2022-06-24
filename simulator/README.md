@@ -31,7 +31,7 @@ We use BDD100k dataset to simulate multiple vehicles (i.e. nodes), each producin
         $ python main.py --data train
         ```
 
-    - validation set (70k)
+    - validation set (10k)
 
         ```sh
         $ python main.py --data val

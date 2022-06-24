@@ -1,4 +1,5 @@
 # Overview
+
 - environmental setup instructions for running the project
 
 ## Getting Started
@@ -9,8 +10,8 @@
     cd docker
 
     # start
-    docker-compose up 
-    or
+    docker-compose up
+    # or
     docker-compose up -d
 
     # down
@@ -19,6 +20,7 @@
     ```
 
 2. container status
+
     ```bash
     $ docker ps
     CONTAINER ID   IMAGE                                             COMMAND                  CREATED       STATUS       PORTS                                        NAMES
@@ -29,7 +31,8 @@
     08521ea01733   confluentinc/cp-zookeeper:7.1.1                   "/etc/confluent/dock…"   2 hours ago   Up 2 hours   2888/tcp, 0.0.0.0:2181->2181/tcp, 3888/tcp   zookeeper
     ```
 
-3. Topics 
+3. Topics
+
     ```bash
     ❯ docker exec -it broker bash
     [appuser@broker ~]$ kafka-topics --bootstrap-server broker:9092 --list
@@ -38,6 +41,7 @@
     ```
 
 4. Connect ksql cli
+
     ```bash
     ❯ docker exec -it ksqldb-cli ksql http://ksqldb-server:8088
     OpenJDK 64-Bit Server VM warning: Option UseConcMarkSweepGC was deprecated in version 9.0 and will likely be removed in a future release.
@@ -62,6 +66,7 @@
     ```
 
 5. Create table
+
     ```sql
     ksql> CREATE TABLE labels (id VARCHAR PRIMARY KEY, category VARCHAR, scene VARCHAR, timeofday VARCHAR, weather VARCHAR) WITH (KAFKA_TOPIC = 'labels', VALUE_FORMAT = 'JSON');
 
@@ -78,10 +83,12 @@
     ```
 
 6. Control Center
-- open http://localhost:9092 in a browser.
-- monitoring Bokers, Topics, ksqlDB, Consumers etc..
+
+   - open http://localhost:9092 in a browser.
+   - monitoring Bokers, Topics, ksqlDB, Consumers etc..
 
 7. delete all
+
     ```bash
     # all container delete
     docker rm -f $(docker ps -aq)
